@@ -11,7 +11,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerImage = docker.build("hospital-management-app") // ✅ added 'def'
+                    bat 'docker build -t hospital-management-app .'
                 }
             }
         }
@@ -20,8 +20,8 @@ pipeline {
             steps {
                 script {
                     bat '''
-                    docker ps -q --filter "name=hospital-management-app" | findstr . && docker stop hospital-management-app || echo "No running container"
-                    docker ps -aq --filter "name=hospital-management-app" | findstr . && docker rm hospital-management-app || echo "No container to remove"
+                    docker ps -q --filter "name=hospital-management-app" | findstr . >nul && docker stop hospital-management-app || echo No running container
+                    docker ps -aq --filter "name=hospital-management-app" | findstr . >nul && docker rm hospital-management-app || echo No container to remove
                     '''
                 }
             }
@@ -37,9 +37,7 @@ pipeline {
 
         stage('List Containers') {
             steps {
-                script {
-                    bat 'docker ps -a'
-                }
+                bat 'docker ps -a'
             }
         }
     }
