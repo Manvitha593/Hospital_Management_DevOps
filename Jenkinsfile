@@ -11,7 +11,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("hospital-management-app")
+                    def dockerImage = docker.build("hospital-management-app") // ✅ added 'def'
                 }
             }
         }
@@ -30,8 +30,7 @@ pipeline {
         stage('Run Container') {
             steps {
                 script {
-                    // Start new container with the same name
-                    bat 'docker run -d --name hospital-management-app -p 8081:3000 hospital-management-app'
+                    bat 'docker run -d -p 8081:3000 --name hospital-management-app hospital-management-app'
                 }
             }
         }
