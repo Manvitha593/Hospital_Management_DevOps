@@ -16,15 +16,27 @@ pipeline {
             }
         }
 
-        stage('Run Container') {
+        stage('Clean Old Containers') {
             steps {
                 script {
-                    dockerImage.run('-d -p 8081:3000')
+                    bat '''
+                    docker ps -q --filter "name=hospital-management-app" | findstr . && docker stop hospital-management-app || echo "No running container"
+                    docker ps -aq --filter "name=hospital-management-app" | findstr . && docker rm hospital-management-app || echo "No container to remove"
+                    '''
                 }
             }
         }
 
-        stage('Clean Up') {
+        stage('Run Container') {
+            steps {
+                script {
+                    // Start new container with the same name
+                    bat 'docker run -d --name hospital-management-app -p 8081:3000 hospital-management-app'
+                }
+            }
+        }
+
+        stage('List Containers') {
             steps {
                 script {
                     bat 'docker ps -a'
