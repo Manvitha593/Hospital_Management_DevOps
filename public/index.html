@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      text-align: center;
+    }
+
+    header {
+      background: linear-gradient(90deg, #171717, #1a1a1a);
+      padding: 30px;
+      border-bottom: 3px solid #444;
+    }
+
+    header img {
+      width: 90px;
+      vertical-align: middle;
+    }
+
+    header h1 {
+      display: inline-block;
+      font-size: 2.2rem;
+      margin-left: 15px;
+      vertical-align: middle;
+      color: #fff;
+    }
+
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 50px 20px;
+      gap: 30px;
+    }
+
+    .card {
+      background: #1b1b1b;
+      width: 220px;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(110, 68, 255, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(142, 45, 226, 0.7);
+    }
+
+    .card img {
+      width: 100px;
+      margin-bottom: 15px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
+
+    .card h2 {
+      margin-bottom: 10px;
+      color: #a970ff;
+    }
+
+    .card a {
+      display: inline-block;
+      background: linear-gradient(90deg, #8e2de2, #4a00e0);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .card a:hover {
+      opacity: 0.8;
+    }
+
+    footer {
+      background-color: #111;
+      padding: 20px;
+      color: #888;
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="images/logo1.png" alt="Hospital Logo" />
+    <h1>CityCare Hospital Dashboard</h1>
+  </header>
+
+  <div class="dashboard">
+    <div class="card">
+      <img src="images/patient1.png" alt="Patients" />
+      <h2>Patients</h2>
+      <a href="patients.html">Manage</a>
+    </div>
+
+    <div class="card">
+      <img src="images/doctor.png" alt="Doctors" />
+      <h2>Doctors</h2>
+      <a href="doctors.html">Manage</a>
+    </div>
+
+    <div class="card">
+      <img src="images/billing.png" alt="Billing" />
+      <h2>Billing</h2>
+      <a href="billing.html">View</a>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2025 CityCare Hospital. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

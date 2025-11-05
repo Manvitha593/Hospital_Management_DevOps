@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billing - Hospital Management</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .billing-container {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background-color: #222;
+      color: #eee;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #444;
+    }
+
+    th {
+      background-color: #333;
+    }
+
+    .add-form {
+      margin-top: 20px;
+    }
+
+    .add-form input, .add-form select {
+      padding: 8px;
+      margin: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .add-form button {
+      background-color: #6e44ff;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .add-form button:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+      <header>
+    <img src="images/logo1.png" alt="Hospital Logo" />
+    <h1>CityCare Hospital Dashboard</h1>
+  </header>
+  <div class="container">
+    <h2>Billing Records</h2>
+
+    <div class="billing-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Patient Name</th>
+            <th>Amount (₹)</th>
+            <th>Date</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody id="billingTable"></tbody>
+      </table>
+
+      <div class="add-form">
+        <h3>Add New Billing Record</h3>
+        <select id="patientSelect"></select>
+        <input type="number" id="amount" placeholder="Amount" />
+        <input type="date" id="date" />
+        <input type="text" id="details" placeholder="Details (optional)" />
+        <button id="addBtn">Add Billing</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function loadBilling() {
+      const res = await fetch("/api/billing");
+      const data = await res.json();
+      const table = document.getElementById("billingTable");
+      table.innerHTML = "";
+
+      if (data.length === 0) {
+        table.innerHTML = `<tr><td colspan="5">No billing records found</td></tr>`;
+        return;
+      }
+
+      data.forEach((b) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${b.id}</td>
+          <td>${b.patient_name || "Unknown"}</td>
+          <td>₹${b.amount}</td>
+          <td>${b.date}</td>
+          <td>${b.details || "-"}</td>
+        `;
+        table.appendChild(row);
+      });
+    }
+
+    async function loadPatients() {
+      const res = await fetch("/api/patients");
+      const patients = await res.json();
+      const select = document.getElementById("patientSelect");
+      select.innerHTML = "";
+      patients.forEach((p) => {
+        const opt = document.createElement("option");
+        opt.value = p.id;
+        opt.textContent = p.name;
+        select.appendChild(opt);
+      });
+    }
+
+    document.getElementById("addBtn").addEventListener("click", async () => {
+      const patient_id = document.getElementById("patientSelect").value;
+      const amount = document.getElementById("amount").value;
+      const date = document.getElementById("date").value;
+      const details = document.getElementById("details").value;
+
+      if (!patient_id || !amount || !date) {
+        alert("Please fill all required fields");
+        return;
+      }
+
+      const res = await fetch("/api/billing", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ patient_id, amount, date, details }),
+      });
+
+      const data = await res.json();
+      alert(data.message);
+      loadBilling();
+    });
+
+    loadPatients();
+    loadBilling();
+  </script>
+</body>
+</html>
